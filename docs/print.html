@@ -1,0 +1,300 @@
+<!DOCTYPE HTML>
+<html lang="en" class="light sidebar-visible" dir="ltr">
+    <head>
+        <!-- Book generated using mdBook -->
+        <meta charset="UTF-8">
+        <title>Настройка</title>
+        <meta name="robots" content="noindex">
+
+
+        <!-- Custom HTML head -->
+
+        <meta name="description" content="">
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+        <meta name="theme-color" content="#ffffff">
+
+        <link rel="icon" href="favicon.svg">
+        <link rel="shortcut icon" href="favicon.png">
+        <link rel="stylesheet" href="css/variables.css">
+        <link rel="stylesheet" href="css/general.css">
+        <link rel="stylesheet" href="css/chrome.css">
+        <link rel="stylesheet" href="css/print.css" media="print">
+
+        <!-- Fonts -->
+        <link rel="stylesheet" href="FontAwesome/css/font-awesome.css">
+        <link rel="stylesheet" href="fonts/fonts.css">
+
+        <!-- Highlight.js Stylesheets -->
+        <link rel="stylesheet" href="highlight.css">
+        <link rel="stylesheet" href="tomorrow-night.css">
+        <link rel="stylesheet" href="ayu-highlight.css">
+
+        <!-- Custom theme stylesheets -->
+
+
+        <!-- Provide site root to javascript -->
+        <script>
+            var path_to_root = "";
+            var default_theme = window.matchMedia("(prefers-color-scheme: dark)").matches ? "navy" : "light";
+        </script>
+        <!-- Start loading toc.js asap -->
+        <script src="toc.js"></script>
+    </head>
+    <body>
+    <div id="body-container">
+        <!-- Work around some values being stored in localStorage wrapped in quotes -->
+        <script>
+            try {
+                var theme = localStorage.getItem('mdbook-theme');
+                var sidebar = localStorage.getItem('mdbook-sidebar');
+
+                if (theme.startsWith('"') && theme.endsWith('"')) {
+                    localStorage.setItem('mdbook-theme', theme.slice(1, theme.length - 1));
+                }
+
+                if (sidebar.startsWith('"') && sidebar.endsWith('"')) {
+                    localStorage.setItem('mdbook-sidebar', sidebar.slice(1, sidebar.length - 1));
+                }
+            } catch (e) { }
+        </script>
+
+        <!-- Set the theme before any content is loaded, prevents flash -->
+        <script>
+            var theme;
+            try { theme = localStorage.getItem('mdbook-theme'); } catch(e) { }
+            if (theme === null || theme === undefined) { theme = default_theme; }
+            const html = document.documentElement;
+            html.classList.remove('light')
+            html.classList.add(theme);
+            html.classList.add("js");
+        </script>
+
+        <input type="checkbox" id="sidebar-toggle-anchor" class="hidden">
+
+        <!-- Hide / unhide sidebar before it is displayed -->
+        <script>
+            var sidebar = null;
+            var sidebar_toggle = document.getElementById("sidebar-toggle-anchor");
+            if (document.body.clientWidth >= 1080) {
+                try { sidebar = localStorage.getItem('mdbook-sidebar'); } catch(e) { }
+                sidebar = sidebar || 'visible';
+            } else {
+                sidebar = 'hidden';
+            }
+            sidebar_toggle.checked = sidebar === 'visible';
+            html.classList.remove('sidebar-visible');
+            html.classList.add("sidebar-" + sidebar);
+        </script>
+
+        <nav id="sidebar" class="sidebar" aria-label="Table of contents">
+            <!-- populated by js -->
+            <mdbook-sidebar-scrollbox class="sidebar-scrollbox"></mdbook-sidebar-scrollbox>
+            <noscript>
+                <iframe class="sidebar-iframe-outer" src="toc.html"></iframe>
+            </noscript>
+            <div id="sidebar-resize-handle" class="sidebar-resize-handle">
+                <div class="sidebar-resize-indicator"></div>
+            </div>
+        </nav>
+
+        <div id="page-wrapper" class="page-wrapper">
+
+            <div class="page">
+                <div id="menu-bar-hover-placeholder"></div>
+                <div id="menu-bar" class="menu-bar sticky">
+                    <div class="left-buttons">
+                        <label id="sidebar-toggle" class="icon-button" for="sidebar-toggle-anchor" title="Toggle Table of Contents" aria-label="Toggle Table of Contents" aria-controls="sidebar">
+                            <i class="fa fa-bars"></i>
+                        </label>
+                        <button id="theme-toggle" class="icon-button" type="button" title="Change theme" aria-label="Change theme" aria-haspopup="true" aria-expanded="false" aria-controls="theme-list">
+                            <i class="fa fa-paint-brush"></i>
+                        </button>
+                        <ul id="theme-list" class="theme-popup" aria-label="Themes" role="menu">
+                            <li role="none"><button role="menuitem" class="theme" id="light">Light</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="rust">Rust</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="coal">Coal</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="navy">Navy</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="ayu">Ayu</button></li>
+                        </ul>
+                        <button id="search-toggle" class="icon-button" type="button" title="Search. (Shortkey: s)" aria-label="Toggle Searchbar" aria-expanded="false" aria-keyshortcuts="S" aria-controls="searchbar">
+                            <i class="fa fa-search"></i>
+                        </button>
+                    </div>
+
+                    <h1 class="menu-title">Настройка</h1>
+
+                    <div class="right-buttons">
+                        <a href="print.html" title="Print this book" aria-label="Print this book">
+                            <i id="print-button" class="fa fa-print"></i>
+                        </a>
+
+                    </div>
+                </div>
+
+                <div id="search-wrapper" class="hidden">
+                    <form id="searchbar-outer" class="searchbar-outer">
+                        <input type="search" id="searchbar" name="searchbar" placeholder="Search this book ..." aria-controls="searchresults-outer" aria-describedby="searchresults-header">
+                    </form>
+                    <div id="searchresults-outer" class="searchresults-outer hidden">
+                        <div id="searchresults-header" class="searchresults-header"></div>
+                        <ul id="searchresults">
+                        </ul>
+                    </div>
+                </div>
+
+                <!-- Apply ARIA attributes after the sidebar and the sidebar toggle button are added to the DOM -->
+                <script>
+                    document.getElementById('sidebar-toggle').setAttribute('aria-expanded', sidebar === 'visible');
+                    document.getElementById('sidebar').setAttribute('aria-hidden', sidebar !== 'visible');
+                    Array.from(document.querySelectorAll('#sidebar a')).forEach(function(link) {
+                        link.setAttribute('tabIndex', sidebar === 'visible' ? 0 : -1);
+                    });
+                </script>
+
+                <div id="content" class="content">
+                    <main>
+                        <p>Какое устройство настроить?</p>
+<ul>
+<li><a href="android/tutorial.html">Android</a></li>
+<li><a href="windows/tutorial.html">Windows</a></li>
+</ul>
+<div style="break-before: page; page-break-before: always;"></div><h3 id="Шаг-1"><a class="header" href="#Шаг-1">Шаг 1</a></h3>
+<p>Открой ссылку <a href="https://play.google.com/store/apps/details?id=app.hiddify.com">https://play.google.com/store/apps/details?id=app.hiddify.com</a> и установи приложение на телефон</p>
+<p><img src="android/Step01.jpg" alt="Шаг 1" /></p>
+<h3 id="Шаг-2"><a class="header" href="#Шаг-2">Шаг 2</a></h3>
+<p>Открой приложение. Выбери:</p>
+<ul>
+<li>Язык: <code>Русский</code></li>
+<li>Регион: <code>Россия</code></li>
+<li>Сбор аналитики: <code>Отключен</code></li>
+</ul>
+<p><img src="android/Step02.jpg" alt="Шаг 2" /></p>
+<h3 id="Шаг-3"><a class="header" href="#Шаг-3">Шаг 3</a></h3>
+<p>Нажми <code>Начать</code>. Откроется главное окно приложения.</p>
+<p><img src="android/Step03.jpg" alt="Шаг 3" /></p>
+<h3 id="Шаг-4"><a class="header" href="#Шаг-4">Шаг 4</a></h3>
+<p>Открой телеграм и скопируй целиком текст который начинается с <code>vless://...</code>:</p>
+<p><img src="android/Step04.jpg" alt="Шаг 4" /></p>
+<h3 id="Шаг-5"><a class="header" href="#Шаг-5">Шаг 5</a></h3>
+<p>Нажми кнопку с символом плюса в правом верхнем углу:</p>
+<p><img src="android/Step05.jpg" alt="Шаг 5" /></p>
+<h3 id="Шаг-6"><a class="header" href="#Шаг-6">Шаг 6</a></h3>
+<p>Нажми <code>Добавить из буфера обмена</code></p>
+<p><img src="android/Step06.jpg" alt="Шаг 6" /></p>
+<p>Повтори шаги 4-6 для текста который начинается с <code>ss://...</code>.</p>
+<h3 id="Шаг-7"><a class="header" href="#Шаг-7">Шаг 7</a></h3>
+<p>После того как обе ссылки вставлены, нажми на выпадающий список наверху приложения:</p>
+<p><img src="android/Step07.jpg" alt="Шаг 7" /></p>
+<h3 id="Шаг-8"><a class="header" href="#Шаг-8">Шаг 8</a></h3>
+<p>Во всплывающем окне будет 2 опции: <code>VLESS</code> и <code>Shadowsocks</code>. Выбери <code>VLESS</code>.</p>
+<ul>
+<li><code>VLESS</code> - основной способ подключения. Предоставляет наилучшую скорость</li>
+<li><code>Shadowsocks</code> - запасной способ. Используй его если <code>VLESS</code> по какой-то причине перестанет работать</li>
+</ul>
+<p><img src="android/Step08.jpg" alt="Шаг 8" /></p>
+<h3 id="Шаг-9"><a class="header" href="#Шаг-9">Шаг 9</a></h3>
+<p>Вернись на главный экран и кликни на большую круглую кнопку в центре экрана (1).
+Дождись пока статус сменится на <code>Подключено</code> (2). Когда приложение подключится, внизу (3) можно посмотреть используемый способ подключения (<code>vless</code> или <code>shadowsocks</code>) и статистику:</p>
+<p><img src="android/Step09.jpg" alt="Шаг 9" /></p>
+<p>Приложение можно оставить подключенным 24/7. Что бы отключить - кликни на большую круглую кнопку ещё раз.</p>
+<h3 id="Шаг-10"><a class="header" href="#Шаг-10">Шаг 10</a></h3>
+<p>Можешь свернуть приложение. Оно продолжит работать в фоне.</p>
+<p><img src="android/Step10.jpg" alt="Шаг 10" /></p>
+<div style="break-before: page; page-break-before: always;"></div><h3 id="Шаг-1-1"><a class="header" href="#Шаг-1-1">Шаг 1</a></h3>
+<p>Открой <code>Пуск</code> меню, набери <code>cmd</code> в строке поиска и запусти командную строку:</p>
+<p><img src="windows/Step01.png" alt="Шаг 1" /></p>
+<h3 id="Шаг-2-1"><a class="header" href="#Шаг-2-1">Шаг 2</a></h3>
+<p>Должна открыться командная строка. Скопируй следующий текст: <code>winget install --id Hiddify.Next --source winget</code> и кликни правой кнопкой внутри командной строки что бы вставить скопированный текст:</p>
+<p><img src="windows/Step02.png" alt="Шаг 2" /></p>
+<h3 id="Шаг-3-1"><a class="header" href="#Шаг-3-1">Шаг 3</a></h3>
+<p>Нажми клавишу <code>Enter</code> - начнётся установка приложения. Дождись пока установка завершится:</p>
+<p><img src="windows/Step03.png" alt="Шаг 3" /></p>
+<h3 id="Шаг-4-1"><a class="header" href="#Шаг-4-1">Шаг 4</a></h3>
+<p>Когда установка закончится, на рабочем столе должна появиться вот такая иконка:</p>
+<p><img src="windows/Step04.png" alt="Шаг 4" /></p>
+<h3 id="Шаг-5-1"><a class="header" href="#Шаг-5-1">Шаг 5</a></h3>
+<p>Запусти приложение. Удостоверься что язык приложения стоит <code>Русский</code>, регион - <code>Россия</code>, и <code>Сбор аналитики</code> отключен:</p>
+<p><img src="windows/Step05.png" alt="Шаг 5" /></p>
+<p>Регион <code>Россия</code> означает что сайты расположенные в России будут открываться напрямую, в то время как все иностранные сайты будут пытаться обойти блокировку.</p>
+<p>Нажми <code>Начать</code>. Откроется основное окно приложения.</p>
+<h3 id="Шаг-6-1"><a class="header" href="#Шаг-6-1">Шаг 6</a></h3>
+<p>Открой телеграм и скопируй целиком текст который начинается с <code>vless://...</code>:</p>
+<p><img src="windows/Step06.png" alt="Шаг 6" /></p>
+<h3 id="Шаг-7-1"><a class="header" href="#Шаг-7-1">Шаг 7</a></h3>
+<p>Переключись обратно в приложение и в правом верхнем углу кликни на иконку с символом плюса:</p>
+<p><img src="windows/Step07.png" alt="Шаг 7" /></p>
+<h3 id="Шаг-8-1"><a class="header" href="#Шаг-8-1">Шаг 8</a></h3>
+<p>Во всплывшем окне кликни <code>Добавить из буфера обмена</code>:</p>
+<p><img src="windows/Step08.png" alt="Шаг 8" /></p>
+<p>Повтори шаги 6-8 для текста который начинается с <code>ss://...</code>.</p>
+<h3 id="Шаг-9-1"><a class="header" href="#Шаг-9-1">Шаг 9</a></h3>
+<p>После того как обе ссылки вставлены, нажми на выпадающий список наверху приложения:</p>
+<p><img src="windows/Step09.png" alt="Шаг 9" /></p>
+<h3 id="Шаг-10-1"><a class="header" href="#Шаг-10-1">Шаг 10</a></h3>
+<p>Во всплывающем окне будет 2 опции: <code>VLESS</code> и <code>Shadowsocks</code>. Выбери <code>VLESS</code>.</p>
+<ul>
+<li><code>VLESS</code> - основной способ подключения. Предоставляет наилучшую скорость</li>
+<li><code>Shadowsocks</code> - запасной способ. Используй его если <code>VLESS</code> по какой-то причине перестанет работать</li>
+</ul>
+<p><img src="windows/Step10.png" alt="Шаг 10" /></p>
+<h3 id="Шаг-11"><a class="header" href="#Шаг-11">Шаг 11</a></h3>
+<p>Открой настройки приложения и убедись что включены настройки <code>Запуск при загрузке</code> и <code>Тихий запуск</code>:</p>
+<p><img src="windows/Step11.png" alt="Шаг 11" /></p>
+<p>Приложение будет запускаться автоматически каждый раз когда ты включаешь компьютер и висеть в трее (см <code>Шаг 14</code>)</p>
+<h3 id="Шаг-12"><a class="header" href="#Шаг-12">Шаг 12</a></h3>
+<p>Вернись на главный экран и кликни на большую круглую кнопку в центре экрана (1).
+Дождись пока статус сменится на <code>Подключено</code> (2). Когда приложение подключится, в левом нижнем угле (3) можно посмотреть используемый способ подключения (<code>vless</code> или <code>shadowsocks</code>) и статистику:</p>
+<p><img src="windows/Step12.png" alt="Шаг 12" /></p>
+<p>Приложение можно оставить подключенным 24/7. Что бы отключить - кликни на большую круглую кнопку ещё раз.</p>
+<h3 id="Шаг-13"><a class="header" href="#Шаг-13">Шаг 13</a></h3>
+<p>Раз в 1-2 месяца проверяй появилась ли новая версия приложения в меню <code>О программе</code>:</p>
+<p><img src="windows/Step13.png" alt="Шаг 13" /></p>
+<h3 id="Шаг-14"><a class="header" href="#Шаг-14">Шаг 14</a></h3>
+<p>Можешь закрыть приложение. Оно должно остаться висеть в трее:</p>
+<p><img src="windows/Step14.png" alt="Шаг 14" /></p>
+<p>Что бы открыть его, просто кликни на иконку.</p>
+
+                    </main>
+
+                    <nav class="nav-wrapper" aria-label="Page navigation">
+                        <!-- Mobile navigation buttons -->
+
+
+                        <div style="clear: both"></div>
+                    </nav>
+                </div>
+            </div>
+
+            <nav class="nav-wide-wrapper" aria-label="Page navigation">
+
+            </nav>
+
+        </div>
+
+
+
+
+        <script>
+            window.playground_copyable = true;
+        </script>
+
+
+        <script src="elasticlunr.min.js"></script>
+        <script src="mark.min.js"></script>
+        <script src="searcher.js"></script>
+
+        <script src="clipboard.min.js"></script>
+        <script src="highlight.js"></script>
+        <script src="book.js"></script>
+
+        <!-- Custom JS scripts -->
+
+        <script>
+        window.addEventListener('load', function() {
+            window.setTimeout(window.print, 100);
+        });
+        </script>
+
+    </div>
+    </body>
+</html>
